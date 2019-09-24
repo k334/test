@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html >
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">公司LOGO</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="/index.html">返回主页</a></li>
+            <li class="layui-nav-item"><a href="javascript:;">数据中心</a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="../static/images/author.jpg" class="layui-nav-img">用户名
+                </a>
+                <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                    <dd><a href="javascript:;">基本资料</a></dd>
+                    <dd><a href="javascript:;">修改密码</a></dd>
+                    <dd><a href="javascript:;">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/login.html">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed message">
+                    <a class="" href="javascript:;">文章</a>
+                </li>
+                <li class="layui-nav-item ">
+                    <a href="javascript:;">页面</a>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;">外观</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">用户</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">设置</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div class="demoTable">
+            搜索ID：
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+            </div>
+            <button class="layui-btn" data-type="reload">搜索</button>
+        </div>
+
+        <table class="layui-hide" id="LAY_table_user" lay-filter="author"></table>
+    </div>
+
+    <div class="layui-footer" style="background-color:black;color:white;text-align:center;">
+        <!-- 底部固定区域 -->
+        © magelala.com
+    </div>
+</div>
+<script src="/layui.js" data-th-src="@{/layui.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //方法级渲染
+        table.render({
+            elem: '#LAY_table_user'
+            ,url: '/all'
+            ,cols: [[
+                {checkbox: true, fixed: true}
+                ,{field:'id', title: 'ID', width:80, sort: true, fixed: true}
+                ,{field:'username', title: '用户名', width:80}
+                ,{field:'name', title: '名称', width:80}
+                ,{field:'sex', title: '性别', width:80, sort: true}
+                ,{field:'tel', title: '电话号码', sort: true, width:80}
+                ,{field:'score', title: '评分', sort: true, width:80}
+                ,{field:'classify', title: '职业', width:80}
+                ,{field:'wealth', title: '财富', sort: true, width:135}
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 310
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var demoReload = $('#demoReload');
+
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        key: {
+                            id: demoReload.val()
+                        }
+                    }
+                }, 'data');
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</body>
+</html>
