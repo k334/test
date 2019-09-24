@@ -83,7 +83,7 @@
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
                     </script>-->
                 </div>
-                <table class="layui-hide" id="LAY-user-back-rol" ></table>
+                <table class="layui-hide" id="LAY-user-back-role"></table>
                 <script type="text/html" id="table-useradmin-admin">
                     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
                     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
@@ -102,12 +102,12 @@
     layui.use('table', function(){
         var table = layui.table;
         table.render({
-            elem: '#LAY-user-back-rol'
+            elem: '#LAY-user-back-role'
             ,url:'/findPage'
             ,method: 'get'
             ,cols: [[
                 {type:'checkbox'}
-                ,{field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'id', width:80, title: 'id', sort: true}
                 ,{field:'userName', width:80, title: '用户名'}
                 ,{field:'password', width:80, title: '密码'}
                 ,{field:'name', title: '姓名', width: 80}
@@ -156,7 +156,7 @@
         //事件
         var active = {
             batchdel: function () {
-                var checkStatus = table.checkStatus('LAY-user-back-rol')
+                var checkStatus = table.checkStatus('LAY-user-back-role')
                     , checkData = checkStatus.data; //得到选中的数据
                 if (checkData.length === 0) {
                     return layer.msg('请选择数据');
@@ -168,13 +168,15 @@
                         data: {id: checkData[0].id},
                         dataType: 'JSON',
                         success: function (data) {
-                            if (data == 1){
+                            //data类型为true，最后需要判断一下
+                            if (data){
                                 layer.msg("删除成功");
-                                table.reload('#LAY-user-back-rol');
+                                table.reload('LAY-user-back-role');
                             }else{
                                 layer.msg("删除失败");
-                                table.reload('#LAY-user-back-rol');
+                                table.reload('LAY-user-back-role');
                             }
+                            console.log(data);
                         },
                         error: function () {
                             //打印选中的id值
@@ -182,9 +184,8 @@
                             alert("错误，请联系管理员");
                         }
                     })
-                    layui.close(index);
-                 // table.reload('LAY-user-back-rol');
-                 // layer.msg('已删除');
+                    table.reload('LAY-user-back-role');
+                    layer.msg('已删除');
                 });
             },
 
@@ -213,10 +214,10 @@
                     //             success: function (data) {
                     //                 if (data == 1){
                     //                     layer.msg("添加成功");
-                    //                     table.reload('#LAY-user-back-rol');
+                    //                     table.reload('LAY-user-back-rol');
                     //                 }else{
                     //                     layer.msg("添加失败");
-                    //                     table.reload('#LAY-user-back-rol');
+                    //                     table.reload('LAY-user-back-rol');
                     //                 }
                     //             },
                     //             error: function () {
@@ -225,7 +226,7 @@
                     //                 alert("错误，请联系管理员");
                     //             }
                     //         })
-                    //         table.reload('LAY-user-back-role');
+                    //         table.reload('LAY-user-back-rol');
                     //         layer.close(index); //关闭弹层
                     //     });
                     //     submit.trigger('click');
@@ -247,21 +248,6 @@
             active[type] ? active[type].call(this) : '';
         });
     });
-
-/*    function addUser() {
-        layer.open({
-            type: 2,
-            title: false,
-            closeBtn: 0, //不显示关闭按钮
-            shade: [0.3], //遮罩层
-            area: ['600px', '300px'],
-            offset: 'auto', //垂直水平弹出
-            /!*time: 2000, //2秒后自动关闭*!/
-            anim: 2,
-            content: ['roleform.html', 'no'], //iframe的url，no代表不显示滚动条
-            maxmin: false, //最小化
-        });
-    }*/
 </script>
 </body>
 </html>
