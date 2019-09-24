@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html >
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="css/layui.css" media="all">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">公司LOGO</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="/index.html">返回主页</a></li>
+            <li class="layui-nav-item"><a href="javascript:;">数据中心</a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="images/user.jpg" class="layui-nav-img">用户名
+                </a>
+                <dl class="layui-nav-child layui-anim layui-anim-upbit">
+                    <dd><a href="javascript:;">基本资料</a></dd>
+                    <dd><a href="javascript:;">修改密码</a></dd>
+                    <dd><a href="javascript:;">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/login.html">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed message">
+                    <a class="" href="javascript:;">文章</a>
+                </li>
+                <li class="layui-nav-item ">
+                    <a href="javascript:;">页面</a>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;">外观</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">用户</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">设置</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">角色筛选</div>
+                        <div class="layui-inline">
+                            <select name="rolename" lay-filter="LAY-user-adminrole-type">
+                                <option value="-1">全部角色</option>
+                                <option value="0">管理员</option>
+                                <option value="1">超级管理员</option>
+                                <option value="2">纠错员</option>
+                                <option value="3">采购员</option>
+                                <option value="4">推销员</option>
+                                <option value="5">运营人员</option>
+                                <option value="6">编辑</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <div style="padding-bottom: 10px;">
+                        <button class="layui-btn layuiadmin-btn-role" data-type="batchdel">删除</button>
+                        <button class="layui-btn layuiadmin-btn-role" data-type="add">添加</button>
+                    </div>
+                    <!--<script type="text/html" id="buttonTpl">
+                        {{#  if(d.check == true){ }}
+                        <button class="layui-btn layui-btn-xs">已审核</button>
+                        {{#  } else { }}
+                        <button class="layui-btn layui-btn-primary layui-btn-xs">未审核</button>
+                        {{#  } }}
+                    </script>
+                    <script type="text/html" id="table-useradmin-admin">
+                        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                    </script>-->
+                </div>
+                <table class="layui-hide" id="LAY-user-back-rol" ></table>
+                <script type="text/html" id="table-useradmin-admin">
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer" style="background-color:black;color:white;text-align:center;">
+        <!-- 底部固定区域 -->
+        © magelala.com
+    </div>
+</div>
+<script src="/layui.js"></script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            elem: '#LAY-user-back-rol'
+            ,url:'/findPage'
+            ,method: 'get'
+            ,cols: [[
+                {type:'checkbox'}
+                ,{field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'userName', width:80, title: '用户名'}
+                ,{field:'password', width:80, title: '密码'}
+                ,{field:'name', title: '姓名', width: 80}
+                ,{field:'tel', width:160, title: '电话号码', sort: true}
+                ,{field:'email', width:180, title: '电子邮件', sort: true}
+                ,{field:'role', width:160, title: '角色'}
+                ,{field:'articleNum', width:120, title: '文章数', sort: true}
+                ,{title: '操作'}
+            ]]
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                ,curr: 1 //设定初始在第 1 页
+                ,limit: 8 //一页显示多少条
+                ,limits: [5,6,7,8,9,10,15,20]
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: '尾页' //不显示尾页
+            }
+        });
+        // 监听工具条
+        table.on('tool(table-useradmin-admin)', function(obj) { // 注：tool是工具条事件名，test是table原始容器的属性
+            var data = obj.data // 获得当前行数据
+                , layEvent = obj.event; // 获得 lay-event 对应的值
+            if ('edit' == layEvent) {
+                addTea(data.id)
+            } else if ('del' == layEvent) {
+                del(data.id);
+            }
+        });
+    });
+    /*layui.use(['index', 'useradmin', 'table'], function() {*/
+    layui.use(['table','layer'], function() {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+            ,layer = layui.layer;
+        //搜索角色
+        form.on('select(LAY-user-adminrole-type)', function (data) {
+            //执行重载
+            table.reload('LAY-user-back-role', {
+                where: {
+                    role: data.value
+                }
+            });
+        });
+        //事件
+        var active = {
+            batchdel: function () {
+                var checkStatus = table.checkStatus('LAY-user-back-rol')
+                    , checkData = checkStatus.data; //得到选中的数据
+                if (checkData.length === 0) {
+                    return layer.msg('请选择数据');
+                }
+                layer.confirm('确定删除吗？',{btn: ['确认','取消']},function (index) {
+                    $.ajax({
+                        url: '/delete?id='+checkData[0].id,
+                        type: 'DELETE',
+                        data: {id: checkData[0].id},
+                        dataType: 'JSON',
+                        success: function (data) {
+                            if (data == 1){
+                                layer.msg("删除成功");
+                                table.reload('#LAY-user-back-rol');
+                            }else{
+                                layer.msg("删除失败");
+                                table.reload('#LAY-user-back-rol');
+                            }
+                        },
+                        error: function () {
+                            //打印选中的id值
+                            console.log(checkData[0].id);
+                            alert("错误，请联系管理员");
+                        }
+                    })
+                    layui.close(index);
+                 // table.reload('LAY-user-back-rol');
+                 // layer.msg('已删除');
+                });
+            },
+
+            //添加事件
+            add: function () {
+                layer.open({
+                    type: 2
+                    , title: '添加用户'
+                    ,shade: [0.3] //遮罩层
+                    , content: 'roleform.html'
+                    , area: ['600px', '480px']
+                    ,offset: 'auto' //垂直水平弹出
+                    , btn: ['确定', '取消']
+                    // , yes: function (index, layero) {
+                    //     var iframeWindow = window['layui-layer-iframe1' + index]
+                    //         , submit = layero.find('iframe').contents().find("#LAY-user-role-submit");
+                    //     //监听提交
+                    //     iframeWindow.layui.form.on('submit(LAY-user-role-submit)', function (data) {
+                    //         var field = data.field; //获取提交的字段
+                    //         //提交 Ajax 成功后，静态更新表格中的数据
+                    //         $.ajax({
+                    //             url: '/add',
+                    //             type: 'PUT',
+                    //             data: field,
+                    //             dataType: 'JSON',
+                    //             success: function (data) {
+                    //                 if (data == 1){
+                    //                     layer.msg("添加成功");
+                    //                     table.reload('#LAY-user-back-rol');
+                    //                 }else{
+                    //                     layer.msg("添加失败");
+                    //                     table.reload('#LAY-user-back-rol');
+                    //                 }
+                    //             },
+                    //             error: function () {
+                    //                 //打印选中的id值
+                    //                 console.log(field);
+                    //                 alert("错误，请联系管理员");
+                    //             }
+                    //         })
+                    //         table.reload('LAY-user-back-role');
+                    //         layer.close(index); //关闭弹层
+                    //     });
+                    //     submit.trigger('click');
+                    // }
+                    ,yes: function (index,layero) {
+                        var body = layer.getChildFrame('body',index);
+                        var commitForm = body.find('#layuiadmin-form-admin');
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        console.log(iframeWin);
+                        console.log(commitForm);
+                        console.log(body);
+                    }
+                });
+            }
+        }
+
+        $('.layui-btn.layuiadmin-btn-role').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+/*    function addUser() {
+        layer.open({
+            type: 2,
+            title: false,
+            closeBtn: 0, //不显示关闭按钮
+            shade: [0.3], //遮罩层
+            area: ['600px', '300px'],
+            offset: 'auto', //垂直水平弹出
+            /!*time: 2000, //2秒后自动关闭*!/
+            anim: 2,
+            content: ['roleform.html', 'no'], //iframe的url，no代表不显示滚动条
+            maxmin: false, //最小化
+        });
+    }*/
+</script>
+</body>
+</html>
