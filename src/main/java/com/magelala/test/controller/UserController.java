@@ -1,12 +1,9 @@
 package com.magelala.test.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.magelala.test.dao.UserMapper;
 import com.magelala.test.entity.Author;
 import com.magelala.test.entity.ResResult;
 import com.magelala.test.service.UserService;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +27,6 @@ public class UserController {
         List<Author> authorList = userService.all();
         ResResult<List<Author>> resResult = ResResult.ok(authorList);
         resResult.setCount(authorList.size());
-        resResult.setLimit(10);
         return resResult;
     }
 
@@ -65,18 +61,27 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/add",method = RequestMethod.PUT)
-    public ResResult<Author> add(@RequestBody Author author){
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    public String add(){
+        return "user/add";
+    }
+
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @ResponseBody
+    public ResResult<Author> add(Author author){
         ResResult<Author> resResult = new ResResult<>();
         author.setArticleNum(0);
         resResult.setCode(0);
+        userService.add(author);
+        resResult.setCount(1);
+        resResult.setMsg("添加成功!");
         resResult.setData(author);
         return resResult;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/test")
     public String user(Model model){
         model.addAttribute("authorList",userService.all());
-        return "user";
+        return "test";
     }
 }
