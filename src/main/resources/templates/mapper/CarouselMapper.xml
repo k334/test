@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magelala.test.dao.CarouselMapper">
+
+    <resultMap id="BaseMap" type="com.magelala.test.entity.Carousel">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="img_url" property="img_url" />
+        <result column="img_link" property="img_link" />
+        <result column="create_time" property="create_time" />
+        <result column="remark" property="remark" />
+        <result column="sort" property="sort" />
+    </resultMap>
+
+    <delete id="deleteList">
+        delete  from carousel where id in
+        <foreach collection="array" item="id" open="("  separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
