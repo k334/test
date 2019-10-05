@@ -90,6 +90,7 @@
                 ,{field:'title', width: 150, title: '标题'}
                 ,{field:'imgLink', title: '图片链接', width: 150}
                 ,{field:'remark',minWidth:200, title: '备注'}
+                ,{field:'sort',title:'排序',width:80}
                 ,{title: '操作',toolbar:"#table-carousel-change",width:100,fixed:'right'}
             ]]
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
@@ -201,15 +202,6 @@
                     , area: ['400px', '400px']
                     , offset: 'auto'
                 });
-/*                    ,success: function (layero,index) {
-                        var body = layer.getChildFrame('body',carousel);
-                        var iframeWin = window[layero.find('iframe')[0]['name']];
-                        console.log(body.html());
-                        body.find('#title').val(1);
-                        body.find("#link").val(2);
-                        body.find("#show").attr("src",'/upload/picture/皮卡丘.jpg');
-                        body.find("#remark").val(3);
-                    }*/
             }
         });
 
@@ -218,12 +210,23 @@
             var data = obj.data
                 ,event = obj.event;
             console.log(data);
-            //上移
             if (event === 'up'){
-                console.log("up");
-            }else if (event === 'down'){  //下移
-                console.log("down");
+                //判断最顶部,直接返回
+            }else if (event === 'down'){
+                //判断最底部,直接返回
             }
+            //上移或者下移
+            $.ajax({
+                url: '/advertise/move?currSort='+data.sort+'&id='+data.id+'&operate='+event,
+                type: 'POST',
+                data: {'id':data.id,currSort:data.sort},
+                dataType: 'JSON',
+                success: function (data) {
+                    table.reload('carousel');
+                },error: function () {
+                    layer.msg("移动失败");
+                }
+            });
         });
     });
 </script>

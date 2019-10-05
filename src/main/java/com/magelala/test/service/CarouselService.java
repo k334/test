@@ -21,4 +21,13 @@ public interface CarouselService {
     List<Carousel> all();
 
     List<Carousel> getCarouselByTitle(String title);
+
+    Carousel up(int sort);
+
+    Carousel down(int sort);
+
+    void updateSelfSort(Integer id,int sort);
+
+    void updateOtherSort(int newSort,int sort);
+
 }

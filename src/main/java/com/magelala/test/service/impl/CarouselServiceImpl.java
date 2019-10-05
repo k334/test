@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -38,11 +40,42 @@ public class CarouselServiceImpl implements CarouselService {
 
     @Override
     public List<Carousel> all() {
-        return carouselMapper.selectList(null);
+        return carouselMapper.all();
     }
 
     @Override
     public List<Carousel> getCarouselByTitle(String title) {
         return carouselMapper.selectTitle(title);
     }
+
+    /**
+     * sort的上一条字段
+     * @param sort
+     * @return
+     */
+    @Override
+    public Carousel up(int sort) {
+        return carouselMapper.upCarousel(sort);
+    }
+
+    /**
+     * sort的下一条字段
+     * @param sort
+     * @return
+     */
+    @Override
+    public Carousel down(int sort) {
+        return carouselMapper.downCarousel(sort);
+    }
+
+    @Override
+    public void updateSelfSort(Integer id, int sort) {
+        carouselMapper.updateSelfSort(id,sort);
+    }
+
+    @Override
+    public void updateOtherSort(int newSort, int sort) {
+        carouselMapper.updateOtherSort(newSort, sort);
+    }
+
 }

@@ -56,10 +56,10 @@ public class CarouselController {
         String path = (String)request.getSession().getAttribute("path");
         carousel.setImgUrl(path);
         carousel.setSort(carousel.getId());
-        carouselService.save(carousel);
+        int count = carouselService.save(carousel);
         carouselResResult.setData(carousel);
         carouselResResult.setCode(200);
-        carouselResResult.setCount(1);
+        carouselResResult.setCount(count);
         carouselResResult.setMsg("添加成功");
         return carouselResResult;
     }
@@ -116,19 +116,6 @@ public class CarouselController {
         return resResult;
     }
 
-    //----------------------------------------需求未完善-------------------------------------------------------
-
-    @RequestMapping(value = "deletes",method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResResult<List<Carousel>> batchDelete(Integer[] ids){
-        List<Carousel> list = carouselMapper.deleteList(ids);
-        ResResult<List<Carousel>> resResult = new ResResult<>();
-        resResult.setCount(list.size());
-        resResult.setCode(0);
-        resResult.setData(list);
-        return resResult;
-    }
-
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     @ResponseBody
     public ResResult<Carousel> update(@RequestBody Carousel carousel){
@@ -150,6 +137,47 @@ public class CarouselController {
         return resResult;
     }
 
+    //----------------------------------------批量删除需求未完善--------------------------------------------
+
+    @RequestMapping(value = "deletes",method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResResult<List<Carousel>> batchDelete(Integer[] ids){
+        List<Carousel> list = carouselMapper.deleteList(ids);
+        ResResult<List<Carousel>> resResult = new ResResult<>();
+        resResult.setCount(list.size());
+        resResult.setCode(0);
+        resResult.setData(list);
+        return resResult;
+    }
+
+    /**
+     * 上移：取上一条记录排序号，将当前记录与上一条记录排序号调换位置
+     * 下移：取下一条记录排序号，将当前记录与下一条记录排序号调换位置
+     * @param currSort 当前排序
+     * @param operate 上移还是下移
+     * @return
+     */
+    @RequestMapping(value = "move",method = RequestMethod.POST)
+    @ResponseBody
+    public ResResult<List<Carousel>> move(@RequestParam("currSort") Integer currSort,@RequestParam("id") Integer id,@RequestParam("operate") String operate){
+        List<Carousel> carousels = new ArrayList<>();
+        ResResult<List<Carousel>> resResult = new ResResult<>();
+        Carousel curr = carouselService.getById(id);
+        carousels.add(curr);
+        if ("up".equals(operate)){
+            Carousel prev = carouselService.up(currSort);
+            carouselService.updateSelfSort(id,prev.getSort());
+            carouselService.updateSelfSort(prev.getId(),currSort);
+            carousels.add(prev);
+        }else if("down".equals(operate)){
+            Carousel next = carouselService.down(currSort);
+            carouselService.updateSelfSort(id,next.getSort());
+            carouselService.updateSelfSort(next.getId(),currSort);
+            carousels.add(next);
+        }
+        resResult.setData(carousels);
+        return resResult;
+    }
 
     //-------------------------------------------------------------------------------------------------
 
