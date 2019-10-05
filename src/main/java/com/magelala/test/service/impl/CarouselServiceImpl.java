@@ -50,8 +50,8 @@ public class CarouselServiceImpl implements CarouselService {
 
     /**
      * sort的上一条字段
-     * @param sort
-     * @return
+     * @param sort 分类
+     * @return 轮播广告对象
      */
     @Override
     public Carousel up(int sort) {
@@ -76,6 +76,16 @@ public class CarouselServiceImpl implements CarouselService {
     @Override
     public void updateOtherSort(int newSort, int sort) {
         carouselMapper.updateOtherSort(newSort, sort);
+    }
+
+    @Override
+    public int max() {
+        return carouselMapper.max();
+    }
+
+    @Override
+    public Carousel maxSort() {
+        return carouselMapper.maxEntity();
     }
 
 }

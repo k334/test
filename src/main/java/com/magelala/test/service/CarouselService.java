@@ -30,4 +30,8 @@ public interface CarouselService {
 
     void updateOtherSort(int newSort,int sort);
 
+    int max();
+
+    Carousel maxSort();
+
 }

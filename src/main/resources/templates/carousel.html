@@ -210,10 +210,20 @@
             var data = obj.data
                 ,event = obj.event;
             console.log(data);
+            var prev = $(this).parent().parent().parent();
+            console.log(prev);
             if (event === 'up'){
                 //判断最顶部,直接返回
+                if ($(prev).prev().html() == null){
+                    layer.alert("已经达到最顶部了");
+                    return;
+                }
             }else if (event === 'down'){
                 //判断最底部,直接返回
+                if ($(prev).next().html() == null){
+                    layer.alert("已经到达最底部了");
+                    return;
+                }
             }
             //上移或者下移
             $.ajax({

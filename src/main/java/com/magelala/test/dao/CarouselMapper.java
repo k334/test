@@ -42,6 +42,13 @@ public interface CarouselMapper extends BaseMapper<Carousel> {
     @Update("update carousel set sort = #{newSort} where sort = #{sort}")
     void updateOtherSort(@Param("newSort") int newSort,@Param("sort") int sort);
 
+    //查询sort的最大值
+    @Select("select max(sort) from carousel")
+    int max();
+
+    @Select("select * from carousel where sort = (select max(sort) from carousel)")
+    Carousel maxEntity();
+
     //--------------------------------------mybatis报错----------------------------------------------------------------
     //批量删除
     List<Carousel> deleteList(@Param("ids") Integer[] ids);

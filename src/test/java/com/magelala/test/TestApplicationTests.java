@@ -40,6 +40,10 @@ public class TestApplicationTests {
         for (Carousel c: list){
             System.out.println(c);
         }
+
+        System.out.println("===============================================================");
+
+        System.out.println(carouselMapper.maxEntity());
     }
 
 }

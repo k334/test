@@ -55,7 +55,8 @@ public class CarouselController {
         carousel.setCreateDate(timestamp);
         String path = (String)request.getSession().getAttribute("path");
         carousel.setImgUrl(path);
-        carousel.setSort(carousel.getId());
+        int max = carouselService.max();
+        carousel.setSort(max+1);
         int count = carouselService.save(carousel);
         carouselResResult.setData(carousel);
         carouselResResult.setCode(200);
@@ -137,19 +138,6 @@ public class CarouselController {
         return resResult;
     }
 
-    //----------------------------------------批量删除需求未完善--------------------------------------------
-
-    @RequestMapping(value = "deletes",method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResResult<List<Carousel>> batchDelete(Integer[] ids){
-        List<Carousel> list = carouselMapper.deleteList(ids);
-        ResResult<List<Carousel>> resResult = new ResResult<>();
-        resResult.setCount(list.size());
-        resResult.setCode(0);
-        resResult.setData(list);
-        return resResult;
-    }
-
     /**
      * 上移：取上一条记录排序号，将当前记录与上一条记录排序号调换位置
      * 下移：取下一条记录排序号，将当前记录与下一条记录排序号调换位置
@@ -176,6 +164,19 @@ public class CarouselController {
             carousels.add(next);
         }
         resResult.setData(carousels);
+        return resResult;
+    }
+
+    //----------------------------------------批量删除需求未完善--------------------------------------------
+
+    @RequestMapping(value = "deletes",method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResResult<List<Carousel>> batchDelete(Integer[] ids){
+        List<Carousel> list = carouselMapper.deleteList(ids);
+        ResResult<List<Carousel>> resResult = new ResResult<>();
+        resResult.setCount(list.size());
+        resResult.setCode(0);
+        resResult.setData(list);
         return resResult;
     }
 
