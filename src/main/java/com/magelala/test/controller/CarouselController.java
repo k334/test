@@ -102,18 +102,21 @@ public class CarouselController {
     }
 
     @ApiOperation(value = "模糊查询",notes = "根据标题查询广告")
-    @RequestMapping(value = "/finds",method = RequestMethod.POST)
+    @RequestMapping(value = "/finds",method = RequestMethod.GET)
     @ResponseBody
-    public ResResult<List<Carousel>> findByTitle(@RequestParam(value = "title") String title){
-        int end = title.indexOf(",");
-        List<Carousel> list = carouselService.getCarouselByTitle(title.substring(0,end).trim());
+    public ResResult<List<Carousel>> findByTitle(@RequestParam(value = "title") String title,
+                                                 @RequestParam("limit")int limit,
+                                                 @RequestParam("page") int page){
+        //int end = title.indexOf(",");
+        List<Carousel> all = carouselMapper.selectTitle(title.trim());
+        List<Carousel> list = carouselService.getCarouselByTitle(title.trim(),(page-1)*limit,limit);
         ResResult<List<Carousel>> resResult = new ResResult<>();
         resResult.setCode(0);
-        resResult.setCount(list.size());
-        resResult.setPage(1);
+        resResult.setCount(all.size());
+        resResult.setPage(page);
         resResult.setData(list);
         resResult.setMsg("成功");
-        resResult.setLimit(list.size());
+        resResult.setLimit(limit);
         return resResult;
     }
 
@@ -169,16 +172,16 @@ public class CarouselController {
 
     //----------------------------------------批量删除需求未完善--------------------------------------------
 
-    @RequestMapping(value = "deletes",method = RequestMethod.DELETE)
+   /* @RequestMapping(value = "deletes",method = RequestMethod.DELETE)
     @ResponseBody
-    public ResResult<List<Carousel>> batchDelete(Integer[] ids){
-        List<Carousel> list = carouselMapper.deleteList(ids);
+    public ResResult<Carousel> batchDelete(Integer[] ids){
+        int i = carouselMapper.deleteList(ids);
         ResResult<List<Carousel>> resResult = new ResResult<>();
         resResult.setCount(list.size());
         resResult.setCode(0);
         resResult.setData(list);
         return resResult;
-    }
+    }*/
 
     //-------------------------------------------------------------------------------------------------
 

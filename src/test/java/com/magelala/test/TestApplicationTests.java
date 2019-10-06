@@ -46,4 +46,11 @@ public class TestApplicationTests {
         System.out.println(carouselMapper.maxEntity());
     }
 
+    @Test
+    public void testDelete(){
+        Integer[] arr = {52,53};
+        int i = carouselMapper.deleteList(arr);
+        System.out.println(i);
+    }
+
 }

@@ -1,7 +1,5 @@
 package com.magelala.test.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.magelala.test.entity.Author;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

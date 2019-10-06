@@ -20,7 +20,7 @@ public interface CarouselService {
 
     List<Carousel> all();
 
-    List<Carousel> getCarouselByTitle(String title);
+    List<Carousel> getCarouselByTitle(String title,int limit,int page);
 
     Carousel up(int sort);
 

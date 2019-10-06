@@ -5,11 +5,9 @@ import com.magelala.test.entity.Carousel;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface CarouselMapper extends BaseMapper<Carousel> {
 
     //查询所有记录，按照sort字段顺序
@@ -23,6 +21,10 @@ public interface CarouselMapper extends BaseMapper<Carousel> {
     //按照标题进行模糊搜索
     @Select("select * from carousel where title like concat('%',#{title},'%')")
     List<Carousel> selectTitle(@Param("title") String title);
+
+    //按照标题进行模糊搜索并且分页
+    @Select("select * from carousel where title like concat('%',#{title},'%') order by sort asc limit #{limit},#{page}")
+    List<Carousel> selectTitlePage(@Param("title") String title,@Param("limit") int limit,@Param("page") int page);
 
     //---------------------------------------test版----------------------------------------------------------
 
@@ -51,8 +53,6 @@ public interface CarouselMapper extends BaseMapper<Carousel> {
 
     //--------------------------------------mybatis报错----------------------------------------------------------------
     //批量删除
-    List<Carousel> deleteList(@Param("ids") Integer[] ids);
-
-
+    int deleteList(@Param("ids") Integer[] ids);
 
 }

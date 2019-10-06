@@ -44,8 +44,8 @@ public class CarouselServiceImpl implements CarouselService {
     }
 
     @Override
-    public List<Carousel> getCarouselByTitle(String title) {
-        return carouselMapper.selectTitle(title);
+    public List<Carousel> getCarouselByTitle(String title,int limit,int page) {
+        return carouselMapper.selectTitlePage(title,limit,page);
     }
 
     /**
