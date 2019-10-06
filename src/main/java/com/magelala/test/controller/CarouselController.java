@@ -172,16 +172,23 @@ public class CarouselController {
 
     //----------------------------------------批量删除需求未完善--------------------------------------------
 
-   /* @RequestMapping(value = "deletes",method = RequestMethod.DELETE)
+    @RequestMapping(value = "deletes",method = RequestMethod.DELETE)
     @ResponseBody
-    public ResResult<Carousel> batchDelete(Integer[] ids){
-        int i = carouselMapper.deleteList(ids);
+    public ResResult<List<Carousel>> batchDelete(@RequestParam("ids") Integer[] ids){
+        List<Carousel> list = new ArrayList<>();
         ResResult<List<Carousel>> resResult = new ResResult<>();
-        resResult.setCount(list.size());
+        for (Integer id:ids){
+            Carousel carousel = carouselService.getById(id);
+            if (null != carousel){
+                list.add(carousel);
+            }
+        }
+       int i = carouselMapper.deleteList(ids);
+        resResult.setCount(i);
         resResult.setCode(0);
         resResult.setData(list);
         return resResult;
-    }*/
+    }
 
     //-------------------------------------------------------------------------------------------------
 

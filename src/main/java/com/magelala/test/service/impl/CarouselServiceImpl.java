@@ -34,6 +34,11 @@ public class CarouselServiceImpl implements CarouselService {
     }
 
     @Override
+    public int batchDelete(Integer[] ids) {
+        return carouselMapper.deleteList(ids);
+    }
+
+    @Override
     public int update(Carousel carousel) {
         return carouselMapper.updateById(carousel);
     }

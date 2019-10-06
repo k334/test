@@ -16,6 +16,8 @@ public interface CarouselService {
 
     int delete(Integer id);
 
+    int batchDelete(Integer[] ids);
+
     int update(Carousel carousel);
 
     List<Carousel> all();

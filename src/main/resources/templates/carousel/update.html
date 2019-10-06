@@ -48,6 +48,13 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="text" id="sort" th:value="${carousel.getSort()}" name="sort" autocomplete="off" class="layui-input" placeholder="请输入广告排序">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit id="update" lay-filter="update">保存修改</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -76,7 +83,7 @@
         });
         form.on('submit(update)',function (data) {
             //JSON数据
-            js = {id:$("#id").val(),title:$("#title").val(),imgUrl:$("#show")[0].src,imgLink:$("#link").val(),remark:$("#remark").val()};
+            js = {id:$("#id").val(),title:$("#title").val(),imgUrl:$("#show")[0].src,imgLink:$("#link").val(),remark:$("#remark").val(),sort:$("#sort").val()};
             $.ajax({
                 url: '/advertise/update',
                 type: 'PUT',

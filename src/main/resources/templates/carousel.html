@@ -86,7 +86,7 @@
                         <img class="layui-photos-demo" src= ` + d.imgUrl + ` style="width: 50px;height: 50px;"/>
                         </div>`;
                     }}
-                ,{field:'createDate',width: 150,title: '创建时间', sort: true}
+                ,{field:'createDate',width: 120,title: '创建时间', sort: true}
                 ,{field:'title', width: 150, title: '标题'}
                 ,{field:'imgLink', title: '图片链接', width: 150}
                 ,{field:'remark',minWidth:200, title: '备注'}
@@ -167,8 +167,10 @@
             }else if (event === 'del'){
                 console.log(data);
                 if (checkStatus.data.length === 0){
-                    return layer.msg("请输入数据");
-                }else{
+                    //没有选择数据
+                    return layer.msg("请选择需要删除的数据");
+                }else if(checkStatus.data.length === 1){
+                    //单个删除
                     layer.confirm('确定删除吗？',{btn: ['确认','取消']},function (index) {
                         $.ajax({
                             url: '/advertise/delete?id=' + data.id,
@@ -185,7 +187,34 @@
                                 alert("错误，请联系后台管理员");
                             }
                         });
-                    })
+                    });
+                }else{
+                    //批量删除
+                    var ids = "",db="";
+                    for (var i = 0;i<checkStatus.data.length;i++){
+                        if (i===0){
+                            ids = "?ids="+checkStatus.data[i].id;
+                        }else{
+                            ids += "&ids="+checkStatus.data[i].id;
+                        }
+                        db += checkStatus.data[i].id +",";
+                    }
+                    console.log(ids);
+                    layer.confirm('确认删除'+checkStatus.data.length+'条数据吗?',{btn:['确认','取消']},function (index) {
+                        $.ajax({
+                           url: '/advertise/deletes'+ids,
+                           type: 'DELETE',
+                            data: {ids:db},
+                           dataType: 'JSON',
+                           success:function (data) {
+                               layer.msg('删除成功');
+                               table.reload('carousel');
+                           }
+                           ,error: function () {
+                             layer.msg('删除失败');
+                           }
+                        });
+                    });
                 }
             }else if(event === 'edit'){
                 if (checkStatus.data.length === 0){
@@ -193,7 +222,6 @@
                 }else if (checkStatus.data.length > 1){
                     return layer.msg("只能修改一行");
                 }
-                /*layer.alert('编辑id:'+checkStatus.data[0].id);*/
                 layer.open({
                     type: 2
                     , title: '修改广告'
