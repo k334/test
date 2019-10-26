@@ -1,7 +1,9 @@
 package com.magelala.test;
 
 import com.magelala.test.dao.CarouselMapper;
+import com.magelala.test.dao.NavMapper;
 import com.magelala.test.entity.Carousel;
+import com.magelala.test.entity.Nav;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +18,14 @@ public class TestApplicationTests {
 
     @Resource
     private CarouselMapper carouselMapper;
+
+    @Resource
+    private NavMapper navMapper;
+
+    @Test
+    public void nav(){
+        System.out.println(navMapper.title(1));
+    }
 
     @Test
     public void contextLoads() {

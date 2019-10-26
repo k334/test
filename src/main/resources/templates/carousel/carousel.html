@@ -8,11 +8,11 @@
 <div class="layui-layout layui-layout-admin">
 
     <!--顶部-->
-    <div th:include="commons/common_header :: commonHeader" class="layui-header"></div>
+    <div th:replace="commons/common_header :: commonHeader"></div>
 
     <!--侧边栏-->
     <div class="layui-side layui-bg-black">
-        <div th:include="commons/common_side::commonSide" class="layui-side-scroll"></div>
+        <div th:replace="commons/common_side::commonSide"></div>
     </div>
 
     <div class="layui-body">
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <div class="layui-footer" th:include="commons/common_footer::commonFooter" style="background-color:black;color:white;text-align:center;"></div>
+    <div th:replace="commons/common_footer::commonFooter"></div>
 </div>
 
 
@@ -239,7 +239,6 @@
                 ,event = obj.event;
             console.log(data);
             var prev = $(this).parent().parent().parent();
-            console.log(prev);
             if (event === 'up'){
                 //判断最顶部,直接返回
                 if ($(prev).prev().html() == null){

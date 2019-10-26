@@ -72,7 +72,7 @@ public class CarouselController {
         ResResult<Carousel> resResult = new ResResult<>();
         if (null != carousel){
             carouselService.delete(id);
-            resResult.setCount(200);
+            resResult.setCode(200);
             resResult.setData(carousel);
             resResult.setMsg("删除成功");
         }else{
@@ -209,7 +209,7 @@ public class CarouselController {
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     @ApiIgnore
     public String carousel(){
-        return "carousel";
+        return "carousel/carousel";
     }
 
 }

@@ -98,7 +98,8 @@
 <script src="/layui.js" data-th-src="@{/layui.js}"></script>
 <script th:inline="none">
     layui.use('table', function(){
-        var table = layui.table;
+        var table = layui.table
+            ,form = layui.table;
         table.render({
             elem: '#LAY-user-back-role'
             ,url:'/findPage'

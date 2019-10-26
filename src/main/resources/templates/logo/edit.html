@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>修改广告</title>
+    <title>修改logo</title>
     <link rel="stylesheet" href="/static/css/layui.css" th:href="@{/css/layui.css}"  media="all" />
 </head>
 
@@ -12,23 +12,16 @@
 <form class="layui-form" id="addForm">
     <div class="layui-form" style="padding: 20px 0 0 0">
 
-        <input type="text" name="id" th:value="${carousel.getId()}" id="id" hidden>
+        <input type="text" name="id" th:value="${logo.id}" id="id" hidden>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">标题</label>
-            <div class="layui-input-inline">
-                <input type="text" id="title" name="title" th:value="${carousel.getTitle()}"  lay-verify="required|title"  autocomplete="off" class="layui-input" placeholder="请输入广告标题">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">广告图片</label>
+            <label class="layui-form-label">Logo图片</label>
             <div class="layui-input-inline">
                 <button type="button" class="layui-btn" id="upload">
                     <i class="layui-icon">&#xe67c;</i>上传图片
                 </button>
-                <img id="show" th:src="@{${carousel.getImgUrl()}}" style="height: 50px;width: 50px;">
-                <input th:value="${carousel.getImgUrl()}" name="imgUrl">
+                <img id="show" th:src="@{${logo.src}}" style="height: 50px;width: 50px;" />
+                <input th:value="${logo.src}" name="src" hidden />
                 <p id="demoText"></p>
             </div>
         </div>
@@ -36,21 +29,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">图片链接</label>
             <div class="layui-input-inline">
-                <input type="text" id="link" th:value="${carousel.getImgLink()}" name="imgLink" lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请输入图片链接地址">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-inline">
-                <input type="text" id="remark" th:value="${carousel.getRemark()}" name="remark" autocomplete="off" class="layui-input" placeholder="请输入广告备注">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">排序</label>
-            <div class="layui-input-inline">
-                <input type="text" id="sort" th:value="${carousel.getSort()}" name="sort" autocomplete="off" class="layui-input" placeholder="请输入广告排序">
+                <input type="text" id="link" th:value="${logo.url}" name="url" lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请输入Logo图片链接地址">
             </div>
         </div>
 
@@ -72,20 +51,11 @@
             ,layer = layui.layer
             ,table = layui.table;
 
-        //添加验证规则
-        form.verify({
-            title: function (value,item) {
-                value =  value.trim();
-                if (value.length<0){
-                    return "请输入广告标题";
-                }
-            }
-        });
         form.on('submit(update)',function (data) {
             //JSON数据
-            js = {id:$("#id").val(),title:$("#title").val(),imgUrl:$("#show")[0].src,imgLink:$("#link").val(),remark:$("#remark").val(),sort:$("#sort").val()};
+            var js = {id:$("#id").val(),src:$("#show")[0].src,url:$("#url").val()};
             $.ajax({
-                url: '/advertise/update',
+                url: '/logo/update',
                 type: 'PUT',
                 dataType: 'JSON',
                 contentType: 'application/json',

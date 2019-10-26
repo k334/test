@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>首页</title>
+    <link rel="stylesheet" href="/static/css/layui.css" th:href="@{/css/layui.css}">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+
+    <!--头部-->
+    <div th:replace="commons/common_header :: commonHeader"></div>
+
+    <!--侧边导航栏-->
+    <div class="layui-side layui-bg-black">
+        <div th:replace="commons/common_side::commonSide"></div>
+    </div>
+
+    <div class="layui-body" style="background-color:#EEEEEE;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <div class="content">
+                <p>访问人数：1人次</p>
+                <p>文章数量：1<br>
+                    分类：</p>
+                <p>表单提交数：1次</p>
+                <p>最近新增文章数：1条</p>
+                <p>消息提醒：你有2条信息</p>
+            </div>
+        </div>
+    </div>
+
+    <!--页脚-->
+    <div th:replace="commons/common_footer :: commonFooter"></div>
+
+</div>
+<script th:src="@{/layui.js}"></script>
+<script>
+    layui.config({
+        base: '/myJs/'
+    }).use('common');
+</script>
+</body>
+</html>
